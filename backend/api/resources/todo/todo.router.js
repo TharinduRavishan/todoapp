@@ -7,5 +7,5 @@ todoRouter.route("/").post(todoController.createTodo);
 todoRouter.route("/").put(todoController.updateTodo);
 todoRouter.route("/").delete(todoController.deleteTodo);
 
-todoRouter.route("/all").get(todoController.findTodos);
-todoRouter.route("/completed").put(todoController.completedTodos);
+todoRouter.route("/list").get(todoController.list);
+todoRouter.route("/complete").put(todoController.completeTodo);
