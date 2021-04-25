@@ -1,11 +1,19 @@
-import Todo from "./todo.model";
-const SUCCESS = "SUCCESS";
+import Todo from './todo.model';
+const SUCCESS = 'SUCCESS';
 
 export default {
   //Create a todo
   async createTodo(req, res) {
     try {
-      const todo = await Todo.create(req.body);
+      const requestBody = req.body;
+
+      if (!requestBody.title) {
+        return res.status(500).send({ error: 'title is required' });
+      }
+      if (!requestBody.assignedUser) {
+        return res.status(500).send({ error: 'assigned user is required' });
+      }
+      const todo = await Todo.create(requestBody);
       return res.send({ message: SUCCESS, data: todo });
     } catch (error) {
       return res.status(500).send(error);
@@ -15,13 +23,18 @@ export default {
   //Update todo
   async updateTodo(req, res) {
     try {
-      const todo = {
-        title: req.body.title,
-        isCompleted: req.body.isCompleted,
-      };
+      const requestBody = req.body;
+
+      if (!requestBody.title) {
+        return res.status(500).send({ error: 'title is required' });
+      }
+      if (!requestBody.assignedUser) {
+        return res.status(500).send({ error: 'assigned user is required' });
+      }
+
       const updateTodo = await Todo.findOneAndUpdate(
         { _id: req.body._id },
-        todo,
+        requestBody,
         { new: true }
       );
       if (updateTodo) {
@@ -49,32 +62,39 @@ export default {
   },
 
   //Get all todos
-  async findTodos(req, res) {
+  async list(req, res) {
     try {
-      const todos = await Todo.find();
-      return res.send({ message: SUCCESS, date: todos });
+      let query = {}
+      const assignedUser = req.query.userId
+      const id = req.query.id;
+
+      if (assignedUser) {
+        query = { assignedUser: assignedUser };
+      }
+
+      if (id) {
+        query = { _id: id }
+      }
+
+      const found = await Todo.find(query).sort({ createdAt: 'DESC'});
+      return res.send({ message: SUCCESS, date: found });
     } catch (error) {
       return res.status(500).send(error);
     }
   },
 
-  //put completed todos
-  async completedTodos(req, res) {
+  //put completed todo
+  async completeTodo(req, res) {
     try {
-      const todos = {
-        asignedUser: req.body.asignedUser,
-        completedAt: req.body.completedAt,
+      const id = req.body.id;
+      const todo = {
+        isCompleted: true,
+        completedAt: new Date().toISOString(),
       };
-      const completedTodo = await Todo.findOneAndUpdate(
-        { _id: req.body._id },
-        todos,
-        { new: true }
-      );
-      if (completedTodo) {
-        return res.send({ message: SUCCESS, data: updateTodo });
-      } else {
-        return res.send({ message: FAILED });
-      }
+      await Todo.findOneAndUpdate({ _id: id }, todo, {
+        new: true,
+      });
+      return res.send({ message: SUCCESS });
     } catch (error) {
       return res.status(500).send(error);
     }
