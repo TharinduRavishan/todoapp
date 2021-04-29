@@ -98,7 +98,9 @@ export default {
         query = { _id: id };
       }
 
-      const found = await User.find(query).sort({ createdAt: "DESC" });
+      const found = await User.find(query)
+        .sort({ createdAt: "DESC" })
+        .select(["firstName", "lastName", "email"]);
       return res.send({ message: SUCCESS, date: found });
     } catch (error) {
       return res.status(500).send(error);
