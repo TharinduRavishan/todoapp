@@ -1,0 +1,54 @@
+.main-app {
+  background: linear-gradient(to right top, #77f3f3, #b167ee, #0080e9);
+  width: 50%;
+  height: 100%;
+  margin: 1px;
+  padding: 25%;
+}
+.title {
+  color: #000000;
+  font-size: 45px;
+}
+
+.user-login {
+  color: #000000;
+  text-align: center;
+  background: linear-gradient(to right top, #58abe2, #8af558, #0080e9);
+  width: 350px;
+  height: 500px;
+  padding: 5px;
+  position: absolute;
+  left: 22%;
+  top: 10%;
+  transform: translate(50%);
+}
+
+.text-box {
+  border-bottom: 2px solid white;
+  position: relative;
+  margin: 5px 25px;
+}
+
+.text-box input {
+  background: none;
+  border: none;
+  outline: none;
+  color: antiquewhite;
+  height: 50%;
+  width: 100%;
+  font-size: 20px;
+}
+
+.loginbtn {
+  color: #ffffff;
+  background: linear-gradient(to right top, #77f3f3, #b167ee, #0080e9);
+  background-size: 200px;
+  transition: 0.5;
+  width: 40%;
+  height: 45px;
+  border: none;
+  outline: none;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: bold;
+}
